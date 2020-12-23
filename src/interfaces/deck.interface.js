@@ -11,7 +11,7 @@ export default class Deck {
   }
 
   addCard(card) {
-    if (!card instanceof Card) {
+    if (!(card instanceof Card)) {
       throw new Error("must be instance of Card");
     }
 

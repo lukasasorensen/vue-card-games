@@ -1,14 +1,20 @@
 <template>
   <div class="home">
     <h1>Sup</h1>
-    <Card :card="exampleCard" />
+    <div class="cards">
+      <div class="card-container" :key="index" v-for="(card, index) in this.deck.cards">
+        <Card :card="card" />
+      </div>
+    </div>
   </div>
 </template>
 
 <script>
 import Card from "../components/Card";
-import CardInterface from "../interfaces/card.interface";
-import { Faces, Suits } from "../constants/card.constants";
+import DeckFactory from "../factories/deck.factory";
+import Deck from '../interfaces/deck.interface';
+
+const deckFactory = new DeckFactory;
 
 export default {
   name: "Home",
@@ -17,8 +23,31 @@ export default {
   },
   data() {
     return {
-      exampleCard: new CardInterface(Suits.HEARTS, Faces.KING, 10)
+      deck: {
+        type: Deck
+      }
     }
+  },
+  mounted() {
+    this.deck = deckFactory.generateStandardDeckNoJokers();
   }
 };
 </script>
+
+<style lang="scss">
+.home {
+  width: 100vw;
+  text-align: center;
+
+  .cards {
+    display: inline-block;
+    .card-container {
+      position: relative;
+      display: inline-block;
+      float: left;
+      margin: 0;
+      padding: 10px;
+    }
+  }
+}
+</style>

@@ -16,8 +16,8 @@ export const Faces = {
 };
 
 export const Suits = {
+	SPADES: 'spades',
 	HEARTS: 'hearts',
 	CLUBS: 'clubs',
-	SPADES: 'spades',
   DIAMONDS: 'diamonds'
 };

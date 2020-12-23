@@ -1,8 +1,7 @@
 export default class Card {
-	constructor(suit, face, value) {
+	constructor(suit, face) {
 		this._suit = suit;
 		this._face = face;
-		this._value = value;
 		this._isFaceUp = true;
 	}
 
@@ -38,6 +37,9 @@ export default class Card {
 	}
 
 	get faceShort() {
+		if (!isNaN(parseInt(this._face))) {
+			return this._face;
+		}
 		return this._face.slice(0, 1).toUpperCase();
 	}
 
