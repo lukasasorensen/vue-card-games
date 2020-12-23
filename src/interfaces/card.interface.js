@@ -10,25 +10,25 @@ export default class Card {
 	}
 
 	get suitShort() {
-		return this._suit.slice(0, 1).toUppercase();
+		return this._suit.slice(0, 1).toUpperCase();
 	}
 
 	get suitHtmlCode() {
 		switch (this._suit.toLowerCase()) {
-			case 'spades':
-			case 'spade':
-				return '&#9824;'
-			case 'hearts':
-			case 'heart':
-				return '&#9829;'
-			case 'clubs':
-			case 'club':
-				return '&#9827;'
-			case 'diamonds':
-			case 'diamond':
-        return '&#9830;'
+			case "spades":
+			case "spade":
+				return "&#9824;"
+			case "hearts":
+			case "heart":
+				return "&#9829;"
+			case "clubs":
+			case "club":
+				return "&#9827;"
+			case "diamonds":
+			case "diamond":
+        return "&#9830;"
       default:
-        return '-'
+        return "-"
 		}
 	}
 
@@ -37,10 +37,27 @@ export default class Card {
 	}
 
 	get faceShort() {
-		return this._face.slice(0, 1).toUppercase();
+		return this._face.slice(0, 1).toUpperCase();
 	}
 
 	get value() {
 		return this._value;
+	}
+
+	get color() {
+		switch (this._suit.toLowerCase()) {
+			case "spades":
+			case "spade":
+			case "clubs":
+			case "club":
+						return "#404040"
+			case "hearts":
+			case "heart":
+			case "diamonds":
+			case "diamond":
+        return "#de5454"
+      default:
+        return "#fff"
+		}
 	}
 }
