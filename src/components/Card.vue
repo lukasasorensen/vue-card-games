@@ -2,11 +2,14 @@
   <div class="playing-card">
       <div class="top-left-info">
           <div class="face">
-              {{faceShort}}
+              {{card.faceShort}}
+          </div>
+          <div class="suit">
+              {{card.suitHtmlCode}}
           </div>
       </div>
       <div class="center-info">
-          
+          {{}}
       </div>
       <div class="bottom-right-info">
 
@@ -15,14 +18,11 @@
 </template>
 
 <script>
-
+import CardInterface from "../interfaces/card.interface"
 export default {
     name: 'Card',
     props: {
-        suit: String,
-        face: String,
-        faceShort: String,
-        value: Number
+        card: CardInterface
     },
     components: {
 
