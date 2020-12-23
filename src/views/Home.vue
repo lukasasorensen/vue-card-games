@@ -5,12 +5,18 @@
 </template>
 
 <script>
-import Card from "../components/Card"
+import Card from "../components/Card";
+import CardInterface from "../interfaces/card.interface";
 
 export default {
   name: "Home",
   components: {
     Card
+  },
+  data() {
+    return {
+      exampleCard: new CardInterface()
+    }
   }
 };
 </script>
