@@ -11,12 +11,13 @@ export const Faces = {
 	FIVE: '5',
 	FOUR: '4',
 	THREE: '3',
-	TWO: '2'
+  TWO: '2',
+  JOKER: 'joker'
 };
 
 export const Suits = {
 	HEARTS: 'hearts',
 	CLUBS: 'clubs',
 	SPADES: 'spades',
-	DIAMONDS: 'diamonds'
+  DIAMONDS: 'diamonds'
 };

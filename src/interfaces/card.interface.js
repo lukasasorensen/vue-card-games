@@ -28,7 +28,7 @@ export default class Card {
 			case "diamond":
         return "&#9830;"
       default:
-        return "-"
+        return ""
 		}
 	}
 
