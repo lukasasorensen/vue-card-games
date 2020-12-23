@@ -1,6 +1,7 @@
 <template>
   <div class="home">
     <h1>Sup</h1>
+    <button @click="shuffle">shuffle</button>
     <div class="cards">
       <div class="card-container" :key="index" v-for="(card, index) in this.deck.cards">
         <Card :card="card" />
@@ -21,6 +22,11 @@ export default {
   components: {
     Card
   },
+  methods: {
+    shuffle: function() {
+      this.deck.shuffle()
+    }
+  },
   data() {
     return {
       deck: {
@@ -40,7 +46,10 @@ export default {
   text-align: center;
 
   .cards {
-    display: inline-block;
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+
     .card-container {
       position: relative;
       display: inline-block;
