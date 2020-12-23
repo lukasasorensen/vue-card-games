@@ -18,9 +18,17 @@ export default class Deck {
     this._cards.push(card);
   }
 
+  removeCard(index) {
+    if (index < 0) {
+      throw new Error("index must be a positive integer");
+    }
+
+    return this._cards.splice(index, 1);
+  }
+
   takeTopCard() {
     if (!this._cards.length) {
-      throw new Error("No cards in deck")
+      throw new Error("No cards in deck");
     }
 
     return this._cards.splice(-1, 1);

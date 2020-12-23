@@ -3,6 +3,7 @@ export default class Card {
 		this._suit = suit;
 		this._face = face;
 		this._value = value;
+		this._isFaceUp = true;
 	}
 
 	get suit() {
@@ -59,5 +60,9 @@ export default class Card {
       default:
         return "#fff"
 		}
+	}
+
+	flip() {
+		this._isFaceUp = !this._isFaceUp
 	}
 }
