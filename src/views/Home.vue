@@ -3,7 +3,7 @@
     <h1>Sup</h1>
     <button @click="shuffle">shuffle</button>
     <div class="cards">
-      <div class="card-container" :key="index" v-for="(card, index) in this.deck.cards">
+      <div class="card-container" :key="index" v-for="(card, index) in this.cards">
         <Card :card="card" />
       </div>
     </div>
@@ -11,11 +11,8 @@
 </template>
 
 <script>
-import Card from "../components/Card";
-import DeckFactory from "../factories/deck.factory";
-import Deck from '../interfaces/deck.interface';
-
-const deckFactory = new DeckFactory;
+import Card from "../components/Card"
+import { mapGetters, mapActions } from "vuex"
 
 export default {
   name: "Home",
@@ -23,19 +20,37 @@ export default {
     Card
   },
   methods: {
-    shuffle: function() {
-      this.deck.shuffle()
-    }
+    ...mapActions('blackjack', [
+      'addPlayer',
+      'giveCardToPlayer',
+      'buildBlackJackDeck'
+    ]),
+    ...mapActions('blackjackDeck', [
+      'addCardToDeck',
+      'takeCardFromDeck',
+      'shuffle',
+      'resetDeck',
+      'discardCard'
+    ])
+  },
+  computed: {
+    ...mapGetters('blackjackDeck', {
+      cards: "getAllCards",
+      currentCard: "getCurrentCard"
+    }),
+    ...mapGetters('blackjack', {
+      players: "getAllPlayers",
+      dealer: "getDealer",
+      game: "getGame"
+    })
   },
   data() {
     return {
-      deck: {
-        type: Deck
-      }
     }
   },
   mounted() {
-    this.deck = deckFactory.generateStandardDeckNoJokers();
+    console.log(this)
+    this.buildBlackJackDeck()
   }
 };
 </script>

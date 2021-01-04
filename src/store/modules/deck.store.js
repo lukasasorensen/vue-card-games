@@ -64,6 +64,10 @@ const actions = {
     }
 
     commit('takeCardFromDeck', 0)
+  },
+  
+  shuffle({ commit }) {
+    commit('shuffle')
   }
 }
 

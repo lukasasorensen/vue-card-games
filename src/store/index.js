@@ -8,9 +8,12 @@ Vue.use(Vuex);
 const store = new Vuex.Store({
   state: {},
   mutations: {},
-  actions: {}
+  actions: {},
+  modules: {
+    blackjack
+  }
 });
 
-store.registerModule('blackjack', 'deck', deck);
+store.registerModule('blackjackDeck', deck);
 
-store.registerModule('blackjack', 'game', blackjack)
+export default store;

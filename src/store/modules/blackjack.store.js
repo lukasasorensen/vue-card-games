@@ -27,7 +27,7 @@ const state = () => ({
 })
 
 const getters = {
-  getPlayers: state => state.players,
+  getAllPlayers: state => state.players,
   getDealer: state => state.dealer,
   getGame: state => state.game
 }
@@ -76,7 +76,7 @@ const actions = {
     commit('giveCardToPlayer', { id, card })
   },
 
-  buildBlackJackDeck({ commit }) {
+  buildBlackJackDeck({ commit, dispatch }) {
     var faces = [
       Faces.ACE,
       Faces.KING,
@@ -93,11 +93,11 @@ const actions = {
       Faces.TWO
     ];
 
-    commit("blackjack/deck/clearDeck")
+    commit("blackjackDeck/clearDeck", {}, { root: true })
 
     faces.forEach(face => {
       Object.keys(Suits).forEach(key => {
-        commit("blackjack/deck/addCard", new Card(Suits[key], face), { root: true })
+        dispatch("blackjackDeck/addCard", new Card(Suits[key], face), { root: true })
       })
     })
   }
