@@ -47,6 +47,10 @@ export default class Card {
 		return this._value;
 	}
 
+	get isFaceUp() {
+		return this._isFaceUp
+	}
+
 	get color() {
 		switch (this._suit.toLowerCase()) {
 			case "spades":

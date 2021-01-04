@@ -1,22 +1,24 @@
 <template>
-  <div class="playing-card" :style="{ color: card.color, zoom: zoom }">
-      <div class="top-left-info">
-          <div class="face">
-              {{card.faceShort}}
-          </div>
-          <div class="suit" v-html="card.suitHtmlCode">
-          </div>
-      </div>
-      <div class="center-info">
-          <div class="suit" v-html="card.suitHtmlCode">
-          </div>
-      </div>
-      <div class="bottom-right-info">
-          <div class="face">
-              {{card.faceShort}}
-          </div>
-          <div class="suit" v-html="card.suitHtmlCode">
-          </div>
+  <div class="playing-card" :class="{ 'face-down': !card.isFaceUp }" :style="{ color: card.color, zoom: zoom }" @click="flip">
+      <div v-if="card.isFaceUp">
+        <div class="top-left-info">
+            <div class="face">
+                {{card.faceShort}}
+            </div>
+            <div class="suit" v-html="card.suitHtmlCode">
+            </div>
+        </div>
+        <div class="center-info">
+            <div class="suit" v-html="card.suitHtmlCode">
+            </div>
+        </div>
+        <div class="bottom-right-info">
+            <div class="face">
+                {{card.faceShort}}
+            </div>
+            <div class="suit" v-html="card.suitHtmlCode">
+            </div>
+        </div>
       </div>
   </div>
 </template>
@@ -30,6 +32,11 @@ export default {
         zoom: {
             type: Number,
             default: 1
+        }
+    },
+    methods: {
+        flip: function() {
+            this.card.flip()
         }
     }
 }
@@ -75,6 +82,10 @@ export default {
         .suit {
             margin-top: -8px;
         }
+    }
+
+    &.face-down {
+        background: red;
     }
 }
 </style>

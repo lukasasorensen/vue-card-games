@@ -19,7 +19,7 @@ const mutations = {
   },
   takeCardFromDeck(state, index) {
     var card = state.cards.splice(index, 1)
-    state.currentCard = card;
+    state.currentCard = card[0];
   },
   shuffle(state) {
     state.cards = shuffle(state.cards)
@@ -68,6 +68,14 @@ const actions = {
   
   shuffle({ commit }) {
     commit('shuffle')
+  },
+
+  resetDeck({ commit }) {
+    commit('resetDeck')
+  },
+
+  discardCard({ commit }, card) {
+    commit('discardCard', card)
   }
 }
 

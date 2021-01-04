@@ -45,6 +45,9 @@ const mutations = {
     if (player) {
       player.hand.push(card)
     }
+  },
+  giveCardToDealer(state, card) {
+    state.dealer.hand.push(card)
   }
 }
 
@@ -74,6 +77,14 @@ const actions = {
     }
 
     commit('giveCardToPlayer', { id, card })
+  },
+
+  giveCardToDealer({ commit }, card) {
+    if (!(card instanceof Card)) {
+      throw new Error("card must be instance of Card")
+    }
+
+    commit('giveCardToDealer', card)
   },
 
   buildBlackJackDeck({ commit, dispatch }) {
