@@ -3,22 +3,37 @@ import { shuffle } from "lodash"
 
 // initial state
 const state = () => ({
-  cards: []
+  cards: [],
+  discardedCards: [],
+  currentCard: null
 })
 
 const getters = {
-  getAllCards: state => state.cards
+  getAllCards: state => state.cards,
+  getCurrentCard: state => state.currentCard
 }
 
 const mutations = {
   addCardToDeck(state, card) {
     state.cards.push(card)
   },
-  removeCardFromDeck(state, index) {
-    state.cards.splice(index, 1)
+  takeCardFromDeck(state, index) {
+    var card = state.cards.splice(index, 1)
+    state.currentCard = card;
   },
   shuffle(state) {
     state.cards = shuffle(state.cards)
+  },
+  clearDeck(state) {
+    state.cards = []
+    state.discardedCards = []
+  },
+  resetDeck(state) {
+    state.cards = state.cards.concat(state.discardedCards)
+    state.discardedCards.length = 0
+  },
+  discardCard(state, card) {
+    state.discardedCards.push(card)
   }
 }
 
@@ -31,7 +46,7 @@ const actions = {
     commit('addCardToDeck', card)
   },
 
-  removeCard({ commit, state }, index) {
+  takeCard({ commit, state }, index) {
     if (index < 0 || typeof index != 'number') {
       throw new Error("index must be a positive integer")
     }
@@ -40,7 +55,7 @@ const actions = {
       throw new Error("no cards in deck")
     }
 
-    commit('removeCardFromDeck', index)
+    commit('takeCardFromDeck', index)
   },
 
   takeTopCard({ commit, state }) {
@@ -48,7 +63,7 @@ const actions = {
       throw new Error("No cards in deck")
     }
 
-    commit('removeCardFromDeck', 0)
+    commit('takeCardFromDeck', 0)
   }
 }
 
