@@ -1,8 +1,13 @@
 export default class Card {
-	constructor(suit, face) {
+	constructor(suit, face, value) {
 		this._suit = suit;
 		this._face = face;
 		this._isFaceUp = true;
+		this._value = null;
+
+		if (value) {
+			this._value = value
+		}
 	}
 
 	get suit() {

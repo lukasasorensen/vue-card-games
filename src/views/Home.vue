@@ -1,41 +1,50 @@
 <template>
-  <div class="blackjack">
-    <!-- <h1>Sup</h1>
+<div class="blackjack">
+  <!-- <h1>Sup</h1>
     <button @click="shuffle">shuffle</button> -->
-    <!-- <div class="cards">
+  <!-- <div class="cards">
       <div class="card-container" :key="index" v-for="(card, index) in this.cards">
         <Card :card="card" />
       </div>
     </div> -->
-    <button @click="startGame">deal</button>
-    <div class="current-card" v-if="this.currentCard">
-      <Card :card="currentCard" :zoom="0.5" />
+  <button @click="startGame">deal</button>
+  <div class="current-card" v-if="this.currentCard && this.showCurrentCard">
+    <Card :card="currentCard" :zoom="0.5" />
+  </div>
+  <div class="dealer">
+    <div class="dealer-count">
+      Count: {{dealer.count}}
+      <span v-if="dealer.secondaryCount > 0 && dealer.secondaryCount < 21"> or {{ dealer.secondaryCount }}</span>
     </div>
     <div class="dealer-hand">
       <div class="dealer-card-container" :key="index" v-for="(card, index) in this.dealer.hand">
         <Card :card="card" />
       </div>
     </div>
-    <div class="players">
-      <div class="player" :key="player.id" v-for="player in this.players">
-        <div class="player-name">{{ player.name }}</div>
-        <div class="player-bet">Bet: {{ player.bet }}</div>
-        <div class="player-money">Money: {{ player.money }}</div>
-        <div class="player-hand">
-          <div class="player-card-container" :key="index" v-for="(card, index) in player.hand">
-            <Card :card="card" :zoom="0.75" />
-          </div>
+  </div>
+  <div class="players">
+    <div class="player" :key="player.id" v-for="player in this.players">
+      <div class="player-name">{{ player.name }}</div>
+      <div class="player-bet">Bet: {{ player.bet }}</div>
+      <div class="player-money">Money: {{ player.money }}</div>
+      <div class="player-count">Count: {{ player.count }}
+        <span v-if="player.secondaryCount > 0 && player.secondaryCount < 21"> or {{ player.secondaryCount }}</span>
+      </div>
+      <div class="player-hand">
+        <div class="player-card-container" :key="index" v-for="(card, index) in player.hand">
+          <Card :card="card" :zoom="0.75" />
         </div>
       </div>
     </div>
   </div>
+</div>
 </template>
 
 <script>
 import Card from "../components/Card"
 import { mapGetters, mapActions } from "vuex"
 
-const sleep = async(ms) => {
+const sleep = async (ms) => {
   return new Promise(resolve => setTimeout(resolve, ms));
 }
 
@@ -60,9 +69,9 @@ export default {
       'resetDeck',
       'discardCard'
     ]),
-    startGame: async function() {
+    startGame: async function () {
       var dealEachPlayer = async () => {
-        for(var i = 0; i < this.players.length; i++) {
+        for (var i = 0; i < this.players.length; i++) {
           this.takeTopCard()
           this.giveCardToPlayer({ id: this.players[i].id, card: this.currentCard })
           await sleep(waitTime)
@@ -77,6 +86,8 @@ export default {
       this.takeTopCard()
       this.currentCard.flip()
       this.giveCardToDealer(this.currentCard)
+
+      console.log(this.players)
     }
   },
   computed: {
@@ -92,6 +103,7 @@ export default {
   },
   data() {
     return {
+      showCurrentCard: false
     }
   },
   mounted() {
@@ -111,14 +123,17 @@ export default {
     margin-top: 15px;
   }
 
-  .dealer-hand {
+  .dealer {
     margin-top: 15px;
-    display: flex;
-    justify-content: center;
+    .dealer-hand {
+      margin-top: 15px;
+      display: flex;
+      justify-content: center;
 
-    .dealer-card-container {
-      width: auto;
-      display: inline-block;
+      .dealer-card-container {
+        width: auto;
+        display: inline-block;
+      }
     }
   }
 
@@ -137,6 +152,7 @@ export default {
   }
 
   .players {
+    padding-bottom: 15px;
     position: fixed;
     bottom: 0;
     width: 100vw;
@@ -147,6 +163,7 @@ export default {
     .player {
       .player-hand {
         display: flex;
+
         .player-card-container {
           display: inline-block;
         }
