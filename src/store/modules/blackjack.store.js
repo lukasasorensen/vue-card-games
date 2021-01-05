@@ -1,42 +1,8 @@
 import { Faces, Suits } from "../../constants/card.constants"
 import Card from "../../interfaces/card.interface"
-import { partition } from "lodash"
-
-const countHand = hand => {
-  var count = 0;
-  var secondaryCount = 0;
-  
-  hand = hand.filter(card => card.isFaceUp)
-
-  if (!hand.length) return
-  
-  var splitHand = partition(hand, card => card.face == Faces.ACE)
-  var aces = splitHand[0]
-  var nonAces = splitHand[1]
-  
-  count = nonAces.reduce((acc, curr) => acc + curr.value, 0)
-
-  if (aces.length) {
-    if (aces.length == 1) {
-      count += 1
-      secondaryCount = count + 11
-    }
-    if (aces.length > 1) {
-      count += (aces.length)
-      secondaryCount = count + 11 + (aces.length - 1)
-    }
-  }
-
-  return { count, secondaryCount }
-}
+import { blackjackUtil } from "../../utils/blackjack.util"
 
 const state = () => ({
-  game: {
-    minBet: 1,
-    maxBet: 1000,
-    maxPlayers: 7
-  },
-
   dealer: {
     hand: []
   },
@@ -51,7 +17,7 @@ const state = () => ({
       order: 0,
       bust: false
     }
-  ],
+  ]
 })
 
 const getters = {
@@ -60,7 +26,7 @@ const getters = {
       player.count = 0;
       player.secondaryCount = 0;
       if (player.hand.length) {
-        var { count, secondaryCount } = countHand(player.hand)
+        var { count, secondaryCount } = blackjackUtil.countHand(player.hand)
         player.count = count
         player.secondaryCount = secondaryCount
       }
@@ -69,14 +35,13 @@ const getters = {
   },
   getDealer: state => {
     if (state.dealer.hand.length) {
-      var { count, secondaryCount } = countHand(state.dealer.hand)
+      var { count, secondaryCount } = blackjackUtil.countHand(state.dealer.hand)
       state.dealer.count = count
       state.dealer.secondaryCount = secondaryCount
     }
 
     return state.dealer
-  },
-  getGame: state => state.game
+  }
 }
 
 const mutations = {
@@ -113,7 +78,14 @@ const mutations = {
   },
   addToDealerSecondaryCount(state, amount) {
     state.dealer.count += amount
-  }
+  },
+  reset(state) {
+    state.players.forEach(player => {
+      player.hand.length = 0
+    })
+    state.dealer.hand.length = 0
+  },
+
 }
 
 const actions = {
@@ -150,6 +122,10 @@ const actions = {
     }
 
     commit('giveCardToDealer', card)
+  },
+
+  newGame({ commit }) {
+    commit('reset')
   },
 
   buildBlackJackDeck({ commit, dispatch }) {

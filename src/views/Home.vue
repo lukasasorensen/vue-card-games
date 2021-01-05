@@ -14,7 +14,7 @@
   <div class="dealer">
     <div class="dealer-count">
       Count: {{dealer.count}}
-      <span v-if="dealer.secondaryCount > 0 && dealer.secondaryCount < 21"> or {{ dealer.secondaryCount }}</span>
+      <span v-if="dealer.secondaryCount > 0 && dealer.secondaryCount <= 21"> or {{ dealer.secondaryCount }}</span>
     </div>
     <div class="dealer-hand">
       <div class="dealer-card-container" :key="index" v-for="(card, index) in this.dealer.hand">
@@ -24,6 +24,12 @@
   </div>
   <div class="players">
     <div class="player" :key="player.id" v-for="player in this.players">
+      <div class="player-controls">
+        <button>hit</button>
+        <button>stay</button>
+        <button>double down</button>
+        <button>split</button>
+      </div>
       <div class="player-name">{{ player.name }}</div>
       <div class="player-bet">Bet: {{ player.bet }}</div>
       <div class="player-money">Money: {{ player.money }}</div>
@@ -42,7 +48,7 @@
 
 <script>
 import Card from "../components/Card"
-import { mapGetters, mapActions } from "vuex"
+import { mapGetters, mapActions, mapState } from "vuex"
 
 const sleep = async (ms) => {
   return new Promise(resolve => setTimeout(resolve, ms));
@@ -60,7 +66,8 @@ export default {
       'addPlayer',
       'giveCardToPlayer',
       'giveCardToDealer',
-      'buildBlackJackDeck'
+      'buildBlackJackDeck',
+      'newGame'
     ]),
     ...mapActions('blackjackDeck', [
       'addCard',
@@ -77,7 +84,9 @@ export default {
           await sleep(waitTime)
         }
       }
-
+      this.newGame()
+      this.buildBlackJackDeck()
+      this.shuffle()
       await dealEachPlayer()
       this.takeTopCard()
       this.giveCardToDealer(this.currentCard)
@@ -86,6 +95,8 @@ export default {
       this.takeTopCard()
       this.currentCard.flip()
       this.giveCardToDealer(this.currentCard)
+
+      this.cardsDealt = true
 
       console.log(this.players)
     }
@@ -103,13 +114,15 @@ export default {
   },
   data() {
     return {
-      showCurrentCard: false
+      showCurrentCard: false,
+      minBet: 1,
+      maxBet: 100,
+      isDealerTurn: false,
+      cardsDealt: false
     }
   },
   mounted() {
     console.log(this)
-    this.buildBlackJackDeck()
-    this.shuffle()
   }
 };
 </script>
@@ -156,7 +169,6 @@ export default {
     position: fixed;
     bottom: 0;
     width: 100vw;
-    height: 250px;
     display: flex;
     justify-content: space-evenly;
 
